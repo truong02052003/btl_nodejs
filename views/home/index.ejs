@@ -24,7 +24,7 @@
                                     <ul class="list-wrap">
                                         <% if (userAuthenticated) { %>
                                             <li><a href="/account/profile">Hi, <%= user.name %></a></li>
-                                            <li><a href="/account/favorite">Favorites</a></li>
+                                            <li><a href="/favorites">Favorites</a></li>
                                             <li><a href="/order/history">History</a></li>
                                             <li><a href="logout">Logout</a></li>
                                             <% } else { %>
@@ -88,7 +88,7 @@
                                                 <a href="/cart">
                                                     <i class="flaticon-shopping-basket"></i>
                                                     <span>
-                                                        <%= carts.length %>
+                                                        <%= carts.length %> <!-- Hiển thị số lượng sản phẩm -->
                                                     </span>
                                                 </a>
                                             </li>
@@ -200,9 +200,9 @@
                                                 <% if (np.favorited) { %>
                                                     <a title="Bỏ thích"
                                                         onclick="return confirm('bạn có muốn bỏ thích không')"
-                                                        href="/favorite/<%= np.id %>"><i class="fas fa-heart"></i></a>
+                                                        href="/favorites/<%= np.id %>"><i class="fas fa-heart"></i></a>
                                                     <% } else { %>
-                                                        <a title="Yêu thích" href="/favorite/<%= np.id %>"><i
+                                                        <a title="Yêu thích" href="/favorites/<%= np.id %>"><i
                                                                 class="far fa-heart"></i></a>
                                                         <% } %>
                                                             <a title="Thêm vào giỏ hàng"
@@ -269,9 +269,9 @@
                                     <p style="font-size: 20px;" class="a"><br>
                                         <% if (sp.favorited) { %>
                                             <a title="Bỏ thích" onclick="return confirm('bạn có muốn bỏ thích không')"
-                                                href="/favorite/<%= sp.id %>"><i class="fas fa-heart"></i></a>
+                                                href="/favorites/<%= sp.id %>"><i class="fas fa-heart"></i></a>
                                             <% } else { %>
-                                                <a title="Yêu thích" href="/favorite/<%= sp.id %>"><i
+                                                <a title="Yêu thích" href="/favorites/<%= sp.id %>"><i
                                                         class="far fa-heart"></i></a>
                                                 <% } %>
                                                     <a title="Thêm vào giỏ hàng" href="/cart/add/<%= sp.id %>"><i
@@ -358,9 +358,9 @@
                                     <p style="font-size: 20px;" class="a"><br>
                                         <% if (hp.favorited) { %>
                                             <a title="Bỏ thích" onclick="return confirm('bạn có muốn bỏ thích không')"
-                                                href="/favorite/<%= hp.id %>"><i class="fas fa-heart"></i></a>
+                                                href="/favorites/<%= hp.id %>"><i class="fas fa-heart"></i></a>
                                             <% } else { %>
-                                                <a title="Yêu thích" href="/favorite/<%= hp.id %>"><i
+                                                <a title="Yêu thích" href="/favorites/<%= hp.id %>"><i
                                                         class="far fa-heart"></i></a>
                                                 <% } %>
                                                     <a title="Thêm vào giỏ hàng" href="/cart/add/<%= hp.id %>"><i

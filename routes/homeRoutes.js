@@ -3,6 +3,7 @@ const router = express.Router();
 const homeController = require('../controllers/homeController');
 const authController = require('../controllers/authController');
 
+
 // Trang chính
 router.get('/', homeController.index);
 
@@ -11,6 +12,7 @@ router.get('/about', homeController.about);
 router.get('/blog', homeController.blog);
 router.get('/page', homeController.page);
 router.get('/contact', homeController.contact);
+
 
 router.get('/category/:catId', homeController.category);
 
