@@ -148,7 +148,7 @@
         </header>
 
         <!-- banner-area -->
-        <section class="banner-area banner-bg" style="background-image: url('/uploads/banner/banner.jpg');">
+        <section class="banner-area banner-bg" style="background-image: url('/uploads/banner/banner.jpg'); height: 30vh; background-size: cover; background-position: center;">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -157,7 +157,7 @@
                                 <%= topBanner.name %>
                             </h1>
                             <span class="sub-title wow fadeInUp" data-wow-delay=".4s"></span>
-                            <a href="<%= topBanner.link %>" style="margin-top:150px;" class="btn wow fadeInUp"
+                            <a href="<%= topBanner.link %>" style="margin-top:-200px;" class="btn wow fadeInUp"
                                 data-wow-delay=".6s">order now</a>
                         </div>
                         <div class="banner-img text-center wow fadeInUp" data-wow-delay=".8s">
@@ -176,7 +176,7 @@
         <!-- banner-area-end -->
 
         <!-- features-area -->
-        <section class="features-area pt-130 pb-70">
+        <section class="features-area pt-130 pb-70" style="margin-top: -200px;">
             <div class="container">
                 <div class="contact-wrap">
                     <div class="container">
@@ -187,7 +187,7 @@
                                         <span class="sub-title">Login account</span>
                                         <h2 class="title">Chào <span>Bạn</span></h2>
                                     </div>
-                                    <p>Bạn hãy đăng ký tài khoản trước sử dụng website của chúng tôi</p>
+                                    <p>Bạn hãy đăng nhập tài khoản dưới đây để sử dụng website của chúng tôi</p>
                                     <div class="contact-form-wrap">
                                         <h1 class="text-center">Đăng nhập</h1>
                                         <form action="/login" method="POST" class="mt-4">
@@ -201,8 +201,9 @@
                                                 <input type="password" name="password" id="password"
                                                     class="form-control" required>
                                             </div>
-                                            <button type="submit" style="margin-top: 10px;"
-                                                class="btn btn-primary btn-block">Login</button>
+                                            <button type="submit" style="margin-top: 10px; display: block; width: 100%; text-align: center; padding: 10px 0;" 
+                                            class="btn btn-primary btn-block">Login</button>
+
                                         </form>
                                     </div>
 
