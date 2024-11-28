@@ -52,6 +52,9 @@ app.use((req, res, next) => {
   res.locals.error_flash = req.flash("error");
   next();
 });
+app.get('/confirm-payment', (req, res) => {
+  res.render('home/confirm-payment'); // Đây là nơi bạn render confirm-payment.ejs
+});
 
 // Routes
 app.use("/", categoryRoutes);

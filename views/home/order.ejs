@@ -1,5 +1,24 @@
 <%- include('../master_user/header.ejs') %>
-<div class="container">
+<div class="area-bg" style="background-image: url('');">
+  <section class="breadcrumb-area tg-motion-effects breadcrumb-bg"
+      data-background="/uploads/bg/breadcrumb_bg.jpg" style="background-size: cover; background-position: center; margin-top: -150px;">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="breadcrumb-content" style="margin-top:-800px;">
+                      <h2 class="title">Thanh toán</h2>
+                      <nav aria-label="breadcrumb">
+                          <ol class="breadcrumb">
+                              <li class="breadcrumb-item"><a href="/cart">Về giỏ hàng</a></li>
+                              <li class="breadcrumb-item active" aria-current="page">Thanh toán</li>
+                          </ol>
+                      </nav>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+<div class="container" style="margin-top: 100px;margin-bottom: 100px;">
   <h2>Chi tiết đơn hàng</h2>
 
   <% if (cartItems.length === 0) { %>
@@ -26,7 +45,7 @@
 
     <h3 class="text-right">Tổng cộng: <%= totalAmount.toLocaleString() %> VND</h3>
 
-    <form action="/order/create-payment" method="POST">
+    <form action="/order/create-payment" method="POST" style="margin-top: 50px; text-align: center;">
       <input type="hidden" name="totalAmount" value="<%= totalAmount %>">
       <button type="submit" class="btn btn-primary">Thanh toán</button>
     </form>

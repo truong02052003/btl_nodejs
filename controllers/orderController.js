@@ -61,8 +61,8 @@ const OrderController = {
           user_action: "PAY_NOW", // Hiển thị nút "Pay Now"
           return_url: `${req.protocol}://${req.get(
             "host"
-          )}/order/confirm-payment`, // Đường dẫn xác nhận
-          cancel_url: `${req.protocol}://${req.get("host")}/order/cancel`, // Đường dẫn hủy
+          )}/confirm-payment`, // Đường dẫn xác nhận
+          cancel_url: `${req.protocol}://${req.get("host")}/cart`, // Đường dẫn hủy
         },
       });
 
@@ -102,7 +102,7 @@ const OrderController = {
             if (err) return res.status(500).send("Lỗi khi lưu giao dịch.");
 
             // Hiển thị trang xác nhận thanh toán
-            res.render("home/confirm-payment");
+            res.redirect("/confirm-payment");
           }
         );
       })
