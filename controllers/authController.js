@@ -83,25 +83,33 @@ const getLoginPage = (req, res) => {
 const postLogin = (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if (err) {
+            console.error('Error during authentication:', err);
             return next(err);
         }
+
         if (!user) {
-            return res.redirect('/login');
+            return res.status(401).send('Invalid email or password.');
         }
 
         req.logIn(user, (err) => {
             if (err) {
+                console.error('Error during login:', err);
                 return next(err);
             }
 
-            // Lưu userId vào session sau khi đăng nhập thành công
+            // Lưu userId vào session
             req.session.userId = user.id;
 
-            // Chuyển hướng đến trang giỏ hàng
-            return res.redirect('/cart');
+            // Điều hướng dựa trên role
+            if (user.role === 'admin') {
+                return res.redirect('/categories'); // Admin vào trang categories
+            } else {
+                return res.redirect('/cart'); // Người dùng thông thường vào giỏ hàng
+            }
         });
     })(req, res, next);
 };
+
 
 // Xử lý đăng xuất
 const getLogout = (req, res) => {
