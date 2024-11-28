@@ -1,0 +1,35 @@
+<%- include('../master_user/header.ejs') %>
+<div class="container">
+  <h2>Chi tiết đơn hàng</h2>
+
+  <% if (cartItems.length === 0) { %>
+    <div class="alert alert-warning text-center">Giỏ hàng của bạn đang trống.</div>
+  <% } else { %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Tên sản phẩm</th>
+          <th>Số lượng</th>
+          <th>Giá</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% cartItems.forEach((item) => { %>
+          <tr>
+            <td><%= item.name %></td>
+            <td><%= item.quantity %></td>
+            <td><%= (item.quantity * (item.sale_price || item.product_price)).toLocaleString() %> VND</td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <h3 class="text-right">Tổng cộng: <%= totalAmount.toLocaleString() %> VND</h3>
+
+    <form action="/order/create-payment" method="POST">
+      <input type="hidden" name="totalAmount" value="<%= totalAmount %>">
+      <button type="submit" class="btn btn-primary">Thanh toán</button>
+    </form>
+  <% } %>
+</div>
+<%- include('../master_user/footer.ejs') %>
