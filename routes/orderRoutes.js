@@ -9,6 +9,6 @@ router.post("/", OrderController.checkout);
 router.post("/create-payment", OrderController.createPayment);
 
 // Route xác nhận thanh toán
-router.post("/confirm-payment", OrderController.confirmPayment);
+router.get("/confirm-payment", OrderController.confirmPayment);
 
 module.exports = router;

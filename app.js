@@ -46,14 +46,8 @@ initializePassport(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Flash messages
-app.use((req, res, next) => {
-  res.locals.success_flash = req.flash("success");
-  res.locals.error_flash = req.flash("error");
-  next();
-});
-app.get('/confirm-payment', (req, res) => {
-  res.render('home/confirm-payment'); // Đây là nơi bạn render confirm-payment.ejs
+app.get("/confirm-payment", (req, res) => {
+  res.render("home/confirm-payment");
 });
 
 // Routes

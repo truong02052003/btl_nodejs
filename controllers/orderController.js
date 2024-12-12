@@ -1,3 +1,5 @@
+// controllers/orderController.js
+
 const Cart = require("../models/cartModel");
 const Order = require("../models/orderModel");
 const paypal = require("@paypal/checkout-server-sdk");
@@ -58,11 +60,10 @@ const OrderController = {
         ],
         application_context: {
           brand_name: "MeatDeli",
-          user_action: "PAY_NOW", // Hiển thị nút "Pay Now"
-          return_url: `${req.protocol}://${req.get(
-            "host"
-          )}/confirm-payment`, // Đường dẫn xác nhận
-          cancel_url: `${req.protocol}://${req.get("host")}/cart`, // Đường dẫn hủy
+          user_action: "PAY_NOW",
+
+          return_url: `${req.protocol}://${req.get("host")}/confirm-payment`,
+          cancel_url: `${req.protocol}://${req.get("host")}/cart`,
         },
       });
 
@@ -74,15 +75,15 @@ const OrderController = {
           );
         })
         .catch((err) => {
-          console.error(err);
+          console.error("Lỗi khi tạo thanh toán PayPal:", err);
           res.status(500).send("Lỗi khi tạo thanh toán PayPal.");
         });
     });
   },
 
-  // Xác nhận thanh toán PayPal
+  // Xác nhận thanh toán PayPal và lưu vào CSDL với kiểm tra lỗi chi tiết
   confirmPayment: (req, res) => {
-    const { token } = req.query; // Lấy token PayPal từ query string
+    const { token } = req.query;
 
     const request = new paypal.orders.OrdersCaptureRequest(token);
     request.requestBody({});
@@ -90,25 +91,68 @@ const OrderController = {
     paypalClient
       .execute(request)
       .then((response) => {
-        const status = response.result.status;
         const transactionId =
           response.result.purchase_units[0].payments.captures[0].id;
-
-        Order.saveTransaction(
-          req.session.userId,
-          transactionId,
-          status,
-          (err) => {
-            if (err) return res.status(500).send("Lỗi khi lưu giao dịch.");
-
-            // Hiển thị trang xác nhận thanh toán
-            res.redirect("/confirm-payment");
+        const status = response.result.status;
+        const userId = req.session.userId;
+        d;
+        Cart.getCartByUserId(userId, (err, cartItems) => {
+          if (err) {
+            console.error("Lỗi khi lấy giỏ hàng:", err);
+            return res.status(500).send("Không thể lấy giỏ hàng.");
           }
-        );
+
+          if (!cartItems.length) {
+            console.error("Giỏ hàng trống.");
+            return res.redirect("/cart");
+          }
+          const totalAmount = cartItems.reduce(
+            (sum, item) =>
+              sum + item.quantity * (item.sale_price || item.product_price),
+            0
+          );
+          const customerDetails = {
+            name: req.session.userName || "Tên khách hàng",
+            email: req.session.userEmail || "email@example.com",
+            phone: req.session.userPhone || "0123456789",
+            address: req.session.userAddress || "Địa chỉ mặc định",
+          };
+          Order.createOrder(
+            userId,
+            cartItems,
+            totalAmount,
+            customerDetails,
+            (err, orderId) => {
+              if (err) {
+                console.error("Lỗi khi lưu đơn hàng:", err);
+                return res.status(500).send("Không thể lưu đơn hàng.");
+              }
+              Order.saveTransaction(orderId, transactionId, status, (err) => {
+                if (err) {
+                  console.error("Lỗi khi lưu giao dịch:", err);
+                  return res.status(500).send("Không thể lưu giao dịch.");
+                }
+                Cart.clearCartByUserId(userId, (err) => {
+                  if (err) {
+                    console.error("Lỗi khi xóa giỏ hàng:", err);
+                    return res
+                      .status(500)
+                      .send("Không thể xóa giỏ hàng sau khi thanh toán.");
+                  }
+
+                  res.render("home/confirm-payment", {
+                    transactionId,
+                    status,
+                  });
+                });
+              });
+            }
+          );
+        });
       })
       .catch((err) => {
-        console.error(err);
-        res.status(500).send("Lỗi khi xác nhận thanh toán.");
+        console.error("Lỗi khi xác nhận thanh toán PayPal:", err);
+        res.status(500).send("Không thể xác nhận thanh toán.");
       });
   },
 };
